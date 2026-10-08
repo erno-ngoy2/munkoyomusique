@@ -1,24 +1,29 @@
 import os
-from fastapi import FastAPI, HTTPException, Form
+from fastapi import FastAPI, HTTPException, Form, BackgroundTasks
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 
 from audio_downloader import rechercher_videos_youtube, telecharger_audio_par_url
 
 app = FastAPI(
-    title="YouTube Audio Search & Downloader",
+    title="MUNKOYO MUSIQUE",
     description="API FastAPI et interface web pour rechercher et télécharger de l'audio YouTube",
-    version="2.0.0"
+    version="2.1.0"
 )
 
-# Dossier où sont enregistrés les fichiers audio
 DOSSIER_DOWNLOADS = "downloads"
+
+
+def supprimer_fichier_temporaire(chemin_fichier: str):
+    """Supprime le fichier du serveur une fois qu'il a été envoyé au client."""
+    try:
+        if os.path.exists(chemin_fichier):
+            os.remove(chemin_fichier)
+    except Exception as e:
+        print(f"Erreur lors de la suppression du fichier temporaire : {e}")
 
 
 @app.get("/", response_class=HTMLResponse)
 def index():
-    """
-    Affiche la page Web responsive permettant la recherche et le choix de la chanson.
-    """
     html_content = """
     <!DOCTYPE html>
     <html lang="fr">
@@ -108,7 +113,6 @@ def index():
             .success { background-color: #e8f5e9; color: #1b5e20; }
             .error { background-color: #ffebee; color: #b71c1c; }
 
-            /* Liste des résultats */
             .results-list {
                 display: flex;
                 flex-direction: column;
@@ -186,7 +190,6 @@ def index():
             const resultsDiv = document.getElementById('results');
             const btnSearch = document.getElementById('btnSearch');
 
-            // 1. Recherche des morceaux
             searchForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const query = queryInput.value.trim();
@@ -215,14 +218,13 @@ def index():
                     const data = await response.json();
                     statusDiv.style.display = 'none';
 
-                    if (data.results.length === 0) {
+                    if (!data.results || data.results.length === 0) {
                         statusDiv.style.display = 'block';
                         statusDiv.className = 'error';
                         statusDiv.innerText = "Aucun résultat trouvé.";
                         return;
                     }
 
-                    // Afficher les résultats sous forme de cartes
                     data.results.forEach(item => {
                         const div = document.createElement('div');
                         div.className = 'result-item';
@@ -230,10 +232,10 @@ def index():
                             <img src="${item.thumbnail}" alt="Vignette" onerror="this.style.display='none'">
                             <div class="result-info">
                                 <div class="result-title" title="${item.title}">${item.title}</div>
-                                <div class="result-meta">${item.uploader} •  ${item.duration}</div>
+                                <div class="result-meta">${item.uploader} • ${item.duration}</div>
                             </div>
                             <button class="btn-download" onclick="downloadAudio('${item.url}', this)">
-                                 Télécharger
+                                Télécharger
                             </button>
                         `;
                         resultsDiv.appendChild(div);
@@ -248,7 +250,6 @@ def index():
                 }
             });
 
-            // 2. Téléchargement du résultat spécifique sélectionné
             async function downloadAudio(url, buttonEl) {
                 const originalText = buttonEl.innerText;
                 buttonEl.innerText = " Extraction...";
@@ -278,15 +279,28 @@ def index():
 
                     const contentDisposition = response.headers.get('Content-Disposition');
                     let filename = 'audio.m4a';
-                    if (contentDisposition && contentDisposition.includes('filename=')) {
-                        filename = contentDisposition.split('filename=')[1].replace(/"/g, '');
+
+                    if (contentDisposition) {
+                        const filenameStarMatch = contentDisposition.match(/filename\*=utf-8''([^;]+)/i);
+                        if (filenameStarMatch && filenameStarMatch[1]) {
+                            filename = decodeURIComponent(filenameStarMatch[1]);
+                        } else {
+                            const filenameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+                            if (filenameMatch && filenameMatch[1]) {
+                                filename = filenameMatch[1];
+                            }
+                        }
                     }
 
                     a.href = downloadUrl;
                     a.download = filename;
                     document.body.appendChild(a);
                     a.click();
-                    a.remove();
+
+                    setTimeout(() => {
+                        a.remove();
+                        window.URL.revokeObjectURL(downloadUrl);
+                    }, 100);
 
                     statusDiv.className = 'success';
                     statusDiv.innerText = "Téléchargement réussi !";
@@ -307,9 +321,6 @@ def index():
 
 @app.post("/api/search")
 def search_endpoint(query: str = Form(...)):
-    """
-    Endpoint qui recherche les vidéos YouTube et retourne une liste de 5 choix.
-    """
     try:
         results = rechercher_videos_youtube(recherche=query, max_resultats=5)
         return JSONResponse(content={"results": results})
@@ -318,11 +329,10 @@ def search_endpoint(query: str = Form(...)):
 
 
 @app.post("/api/download")
-def download_audio_endpoint(url: str = Form(...)):
-    """
-    Endpoint qui effectue le téléchargement direct de l'URL sélectionnée.
-    """
+def download_audio_endpoint(background_tasks: BackgroundTasks, url: str = Form(...)):
     try:
+        os.makedirs(DOSSIER_DOWNLOADS, exist_ok=True)
+
         resultat = telecharger_audio_par_url(url_video=url, dossier_destination=DOSSIER_DOWNLOADS)
         fichier_chemin = resultat.get("file_path")
         fichier_nom = resultat.get("filename")
@@ -330,10 +340,15 @@ def download_audio_endpoint(url: str = Form(...)):
         if not fichier_chemin or not os.path.exists(fichier_chemin):
             raise HTTPException(status_code=500, detail="Fichier introuvable après traitement.")
 
+        background_tasks.add_task(supprimer_fichier_temporaire, fichier_chemin)
+
         return FileResponse(
             path=fichier_chemin,
+            filename=fichier_nom,
             media_type="audio/mp4",
-            filename=fichier_nom
+            headers={
+                "Access-Control-Expose-Headers": "Content-Disposition"
+            }
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
