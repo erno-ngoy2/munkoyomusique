@@ -110,15 +110,17 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio de la vidéo en contournant les blocages de rechargement de page.
+    Télécharge uniquement le flux audio de la vidéo en contournant les blocages.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
 
-    # Contournement de l'erreur "The page needs to be reloaded"
+    # Forcer strictement le téléchargement de l'audio brut sans fusion vidéo
     ydl_opts.update({
+        'format': 'bestaudio/best',
+        'extract_audio': True,
         'extractor_args': {
             'youtube': {
                 'player_client': ['android', 'ios', 'mweb', 'web'],
