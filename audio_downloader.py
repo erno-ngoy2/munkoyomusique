@@ -110,19 +110,19 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio de la vidéo en utilisant le client mobile pour éviter le blocage des formats.
+    Télécharge l'audio de la vidéo en contournant les restrictions de format.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
 
-    # Configuration robuste pour forcer un format compatible sur Render
+    # Utilisation d'une sélection de format tolérante et des clients mobiles
     ydl_opts.update({
-        'format': 'ba*[ext=m4a]/bestaudio/best',
+        'format': 'ba/bestaudio/best',
         'extractor_args': {
             'youtube': {
-                'player_client': ['mweb', 'android'],
+                'player_client': ['mweb', 'ios', 'android'],
             }
         }
     })
