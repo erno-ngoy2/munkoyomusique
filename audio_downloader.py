@@ -110,21 +110,15 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio de la vidéo en sélectionnant le meilleur format audio disponible.
+    Télécharge l'audio de la vidéo en contournant les blocages de rechargement de page.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
 
-    # Options robustes pour éviter l'erreur de format indisponible
+    # Contournement de l'erreur "The page needs to be reloaded"
     ydl_opts.update({
-        'format': 'bestaudio/best',  # Prend le meilleur flux audio disponible
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
         'extractor_args': {
             'youtube': {
                 'player_client': ['android', 'ios', 'mweb', 'web'],
@@ -138,18 +132,12 @@ def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downlo
             info = ydl.extract_info(url_video, download=True)
             filename = ydl.prepare_filename(info)
 
-            # Ajuste l'extension si converti en mp3 par ffmpeg
-            base, _ = os.path.splitext(filename)
-            final_filename = base + ".mp3"
-            if not os.path.exists(final_filename) and os.path.exists(filename):
-                final_filename = filename
-
         return {
             "status": "success",
             "title": info.get("title", "audio_youtube"),
             "duration": info.get("duration"),
-            "file_path": os.path.abspath(final_filename),
-            "filename": os.path.basename(final_filename)
+            "file_path": os.path.abspath(filename),
+            "filename": os.path.basename(filename)
         }
     finally:
         nettoyer_fichier_cookie(ydl_opts)
