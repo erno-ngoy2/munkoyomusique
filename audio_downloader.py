@@ -110,22 +110,12 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio de la vidéo en contournant les restrictions de format.
+    Télécharge l'audio de la vidéo avec le proxy Webshare.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
-
-    # Utilisation d'une sélection de format tolérante et des clients mobiles
-    ydl_opts.update({
-        'format': 'ba/bestaudio/best',
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['mweb', 'ios', 'android'],
-            }
-        }
-    })
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -144,7 +134,7 @@ def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downlo
 
 
 if __name__ == "__main__":
-    saisie = input("Entrez un titre de chanson ou une URL YouTube  : ").strip()
+    saisie = input("Entrez un titre de chanson ou une URL YouTube : ").strip()
     if saisie:
         if saisie.startswith("http://") or saisie.startswith("https://"):
             res = telecharger_audio_par_url(saisie)
