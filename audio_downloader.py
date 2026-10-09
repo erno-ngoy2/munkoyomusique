@@ -5,7 +5,9 @@ import yt_dlp
 
 def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
     """
-    Génère le dictionnaire d'options de yt-dlp optimisé pour éviter le blocage 'Sign in to confirm you're not a bot'.
+    Génère le dictionnaire d'options de yt-dlp.
+    Injecte les cookies depuis la variable d'environnement YOUTUBE_COOKIES
+    si elle est disponible en production (Render).
     """
     options = {
         'format': 'ba/bestaudio/m4a/best',
@@ -13,27 +15,24 @@ def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
         'quiet': True,
         'no_warnings': True,
         'ignoreerrors': False,
-        'nocheckcertificate': True,
         'http_headers': {
             'User-Agent': (
-                'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) '
-                'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             ),
-            'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Language': 'en-US,en;q=0.9',
         },
         'extractor_args': {
             'youtube': {
-                'player_client': ['mweb', 'android', 'ios'],
-                'skip': ['webpage', 'configs'],
+                'player_client': ['android', 'ios'],
             }
         },
     }
 
-    # Injection des cookies depuis la variable d'environnement Render (YOUTUBE_COOKIES)
+    # Injection des cookies si la variable d'environnement YOUTUBE_COOKIES est configurée
     cookies_content = os.getenv('YOUTUBE_COOKIES')
     if cookies_content:
-        # Nettoyage préalable des espaces superflus
-        cookies_content = cookies_content.strip()
+        # Création d'un fichier temporaire pour stocker le contenu des cookies
         temp_cookie_file = tempfile.NamedTemporaryFile(
             delete=False, mode='w', encoding='utf-8', suffix='.txt'
         )
@@ -46,19 +45,19 @@ def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
 
 def nettoyer_fichier_cookie(ydl_opts: dict):
     """
-    Supprime le fichier temporaire de cookies après l'opération.
+    Supprime le fichier temporaire de cookies après l'opération s'il a été généré.
     """
     cookie_path = ydl_opts.get('cookiefile')
     if cookie_path and os.path.exists(cookie_path):
         try:
             os.remove(cookie_path)
         except Exception as e:
-            print(f"Erreur lors de la suppression du fichier cookie : {e}")
+            print(f"Erreur lors de la suppression du fichier cookie temporaire : {e}")
 
 
 def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
     """
-    Recherche des vidéos sur YouTube et retourne une liste de résultats.
+    Recherche des vidéos sur YouTube et retourne une liste de résultats détaillés.
     """
     query = recherche.strip()
     if not (query.startswith("http://") or query.startswith("https://")):
@@ -66,7 +65,7 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
     ydl_opts = obtenir_options_ytdl()
     ydl_opts.update({
-        'extract_flat': 'in_playlist',
+        'extract_flat': 'in_playlist',  # Extraction rapide des métadonnées
     })
 
     resultats = []
@@ -79,6 +78,7 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
                 if not entry:
                     continue
 
+                # Formatage de la durée (mm:ss)
                 duration_sec = entry.get('duration')
                 if duration_sec:
                     minutes, secondes = divmod(int(duration_sec), 60)
@@ -86,6 +86,7 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
                 else:
                     duree_formatee = "Inconnue"
 
+                # Récupération de la miniature
                 thumbnails = entry.get('thumbnails', [])
                 thumbnail_url = thumbnails[0]['url'] if thumbnails else ""
 
@@ -105,7 +106,7 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge le flux audio de la vidéo sélectionnée.
+    Télécharge le flux audio de la vidéo sélectionnée par l'utilisateur.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
