@@ -4,12 +4,6 @@ import yt_dlp
 
 
 def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
-    """
-    Génère les options yt-dlp en injectant automatiquement :
-    1. Le proxy Webshare (PROXY_URL)
-    2. Les cookies (YOUTUBE_COOKIES)
-    3. Les runtimes JavaScript pour contourner les verrous YouTube.
-    """
     options = {
         'format': 'ba/bestaudio/m4a/best',
         'outtmpl': os.path.join(dossier_destination, '%(title)s.%(ext)s'),
@@ -27,12 +21,15 @@ def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
         },
     }
 
-    # 1. Prise en charge du Proxy Webshare
+    # Validation et nettoyage strict de la variable PROXY_URL
     proxy = os.getenv('PROXY_URL')
     if proxy:
-        options['proxy'] = proxy.strip()
+        proxy = proxy.strip()
+        # On s'assure que le proxy commence bien par http:// et n'est pas vide
+        if proxy.startswith('http://') or proxy.startswith('https://'):
+            options['proxy'] = proxy
 
-    # 2. Prise en charge des Cookies
+    # Injection des cookies
     cookies_content = os.getenv('YOUTUBE_COOKIES')
     if cookies_content:
         cookies_content = cookies_content.strip()
