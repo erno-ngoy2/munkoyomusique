@@ -110,12 +110,22 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio de la vidéo avec le proxy Webshare.
+    Télécharge l'audio de la vidéo en contournant les blocages de rechargement de page.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
+
+    # Contournement de l'erreur "The page needs to be reloaded"
+    ydl_opts.update({
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'ios', 'mweb', 'web'],
+                'player_skip': ['webpage'],
+            }
+        }
+    })
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
