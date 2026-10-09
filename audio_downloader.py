@@ -110,21 +110,19 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge uniquement le flux audio de la vidéo en contournant les blocages.
+    Télécharge l'audio de la vidéo en utilisant le client mobile pour éviter le blocage des formats.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
 
-    # Forcer strictement le téléchargement de l'audio brut sans fusion vidéo
+    # Configuration robuste pour forcer un format compatible sur Render
     ydl_opts.update({
-        'format': 'bestaudio/best',
-        'extract_audio': True,
+        'format': 'ba*[ext=m4a]/bestaudio/best',
         'extractor_args': {
             'youtube': {
-                'player_client': ['android', 'ios', 'mweb', 'web'],
-                'player_skip': ['webpage'],
+                'player_client': ['mweb', 'android'],
             }
         }
     })
