@@ -144,7 +144,7 @@ def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downlo
 
 
 if __name__ == "__main__":
-    saisie = input("Entrez un titre de chanson ou une URL YouTube : ").strip()
+    saisie = input("Entrez un titre de chanson ou une URL YouTube  : ").strip()
     if saisie:
         if saisie.startswith("http://") or saisie.startswith("https://"):
             res = telecharger_audio_par_url(saisie)
