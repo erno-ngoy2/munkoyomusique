@@ -1,0 +1,25 @@
+# flyctl launch added from .gitignore
+# Fichiers audio téléchargés
+**/downloads
+**/*.m4a
+**/*.mp3
+**/*.webm
+
+# Environnement virtuel Python
+**/venv
+**/.venv
+**/env
+
+# Cache Python
+**/__pycache__
+**/*.py[cod]
+
+# Fichiers système et IDE
+**/.DS_Store
+**/.vscode
+**/.idea
+
+# flyctl launch added from .venv/.gitignore
+# Created by venv; see https://docs.python.org/3/library/venv.html
+.venv/**/*
+fly.toml
