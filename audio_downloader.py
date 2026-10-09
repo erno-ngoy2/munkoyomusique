@@ -110,22 +110,12 @@ def rechercher_videos_youtube(recherche: str, max_resultats: int = 5) -> list:
 
 def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downloads") -> dict:
     """
-    Télécharge l'audio avec une configuration anti-blocage agressive.
+    Télécharge l'audio de la vidéo avec le proxy Webshare.
     """
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination, exist_ok=True)
 
     ydl_opts = obtenir_options_ytdl(dossier_destination=dossier_destination)
-
-    # Contournement strict de l'erreur de format via les clients iOS / Web mobile
-    ydl_opts.update({
-        'format': 'bestaudio/best',
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['ios', 'mweb'],
-            }
-        }
-    })
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -141,6 +131,7 @@ def telecharger_audio_par_url(url_video: str, dossier_destination: str = "downlo
         }
     finally:
         nettoyer_fichier_cookie(ydl_opts)
+
 
 if __name__ == "__main__":
     saisie = input("Entrez un titre de chanson ou une URL YouTube : ").strip()
