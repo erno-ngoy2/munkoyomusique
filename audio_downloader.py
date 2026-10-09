@@ -1,30 +1,38 @@
 import os
-import shutil
 import tempfile
 import yt_dlp
 
 
 def obtenir_options_ytdl(dossier_destination: str = "downloads") -> dict:
+    """
+    Génère le dictionnaire d'options de yt-dlp.
+    Injecte les cookies depuis la variable d'environnement YOUTUBE_COOKIES
+    si elle est disponible en production (Render).
+    """
     options = {
-        'format': 'bestaudio/best',
+        'format': 'ba/bestaudio/m4a/best',
         'outtmpl': os.path.join(dossier_destination, '%(title)s.%(ext)s'),
-        'quiet': not os.getenv('DEBUG_YTDLP'),
-        'no_warnings': not os.getenv('DEBUG_YTDLP'),
-        'verbose': bool(os.getenv('DEBUG_YTDLP')),
+        'quiet': True,
+        'no_warnings': True,
         'ignoreerrors': False,
+        'http_headers': {
+            'User-Agent': (
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            ),
+            'Accept-Language': 'en-US,en;q=0.9',
+        },
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'ios'],
+            }
+        },
     }
 
-    # Runtime JavaScript : yt-dlp utilise Deno par défaut, sinon on active Node
-    if not shutil.which('deno') and shutil.which('node'):
-        options['js_runtimes'] = {'node': {}}
-
-    # Proxy optionnel (utile si l'IP de Render est bloquée)
-    proxy = os.getenv('PROXY_URL')
-    if proxy:
-        options['proxy'] = proxy
-
+    # Injection des cookies si la variable d'environnement YOUTUBE_COOKIES est configurée
     cookies_content = os.getenv('YOUTUBE_COOKIES')
     if cookies_content:
+        # Création d'un fichier temporaire pour stocker le contenu des cookies
         temp_cookie_file = tempfile.NamedTemporaryFile(
             delete=False, mode='w', encoding='utf-8', suffix='.txt'
         )
