@@ -1,0 +1,51 @@
+[
+  {
+    "version": "1.1",
+    "code": 2,
+    "date": "2026-10-12",
+    "statut": "actuelle",
+    "notes": [
+      "Compte Google facultatif : ta photo de profil s'affiche dans le bouton rond de la barre de navigation",
+      "Historique de recherche relié à ton compte, avec suppression d'un élément ou de tout l'historique",
+      "Alertes de mise à jour dans l'application : seules les versions plus anciennes sont prévenues",
+      "Notifications envoyées par MalakiLabs à tous les utilisateurs",
+      "Recherches déjà faites retrouvées dans la base de données, sans interroger de nouveau YouTube",
+      "Logo à la place du titre sur la page d'accueil et nouvel écran de démarrage animé"
+    ]
+  },
+  {
+    "version": "1.0",
+    "code": 1,
+    "date": "2026-10-11",
+    "statut": "precedente",
+    "notes": [
+      "Suggestions de musique dès l'ouverture : plus jamais de page vide",
+      "Propositions de recherche pendant la saisie",
+      "Lecteur en forme de CD avec disque qui tourne pendant la lecture",
+      "Nouvelle barre de navigation flottante et mini-lecteur",
+      "Design bleu ciel et correction du bouton retour",
+      "Compteur anonyme d'utilisateurs par jour"
+    ]
+  },
+  {
+    "version": "0.2",
+    "code": 0,
+    "date": "2026-10-10",
+    "statut": "test",
+    "notes": [
+      "Lecteur audio intégré : lecture, pause, précédent, suivant, aléatoire, répétition",
+      "Vitesse de lecture, minuteur de sommeil et recherche dans ta musique",
+      "Lecture dans les notifications et progression des téléchargements"
+    ]
+  },
+  {
+    "version": "0.1",
+    "code": 0,
+    "date": "2026-10-09",
+    "statut": "test",
+    "notes": [
+      "Première version Android : recherche et téléchargement de l'audio directement sur le téléphone",
+      "Enregistrement des morceaux dans le dossier Musique/Munkoyo"
+    ]
+  }
+]

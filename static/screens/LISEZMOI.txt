@@ -1,0 +1,3 @@
+Pour montrer de VRAIES captures d'écran de l'application sur la page :
+mets ici des images .png / .jpg / .webp (de préférence 3 à 6, format portrait).
+Elles remplaceront automatiquement les maquettes dessinées.

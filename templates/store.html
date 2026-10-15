@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MUNKOYO MUSIQUE — Application Android par MalakiLabs</title>
+<meta name="description" content="MUNKOYO MUSIQUE : cherche, télécharge et écoute ta musique sur Android avec un lecteur CD intégré. Application gratuite développée par MalakiLabs.">
+<meta name="theme-color" content="#7DD3FC">
+<link rel="canonical" href="__SITE_URL__/">
+<link rel="icon" type="image/png" href="/static/favicon.png">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MUNKOYO MUSIQUE — par MalakiLabs">
+<meta property="og:description" content="Cherche, télécharge et écoute ta musique avec un lecteur CD intégré. Application Android gratuite.">
+<meta property="og:image" content="__SITE_URL__/static/logo.png">
+<meta property="og:url" content="__SITE_URL__/">
+<style>
+:root{
+  --ciel:#0EA5E9; --ciel-clair:#38BDF8; --ciel-fonce:#0284C7; --ciel-pale:#E0F2FE;
+  --marine:#0B1B2E; --marine2:#10263D; --marine3:#17324E;
+  --texte:#0c2a40; --doux:#5b7184; --ligne:#e1eef7;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--texte);
+  background:linear-gradient(180deg,#7DD3FC 0,#BAE6FD 380px,#F0F9FF 860px,#F0F9FF 100%);
+  background-repeat:no-repeat;background-color:#F0F9FF;
+  line-height:1.55;
+}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+
+/* ---------- Barre du haut ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(2,100,160,.12)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.topbar img{width:38px;height:38px;border-radius:11px;box-shadow:0 3px 10px rgba(2,100,160,.3)}
+.topbar .nom{font-weight:800;letter-spacing:.5px;font-size:.95rem;line-height:1.1}
+.topbar .nom small{display:block;font-weight:600;font-size:.68rem;color:var(--doux);letter-spacing:.3px}
+.topbar .nom small b{color:var(--ciel-fonce)}
+.topbar .espace{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font-weight:800;border-radius:14px;transition:transform .12s ease,box-shadow .12s ease}
+.btn:active{transform:scale(.97)}
+.btn-main{background:linear-gradient(135deg,var(--ciel),var(--ciel-fonce));color:#fff;padding:14px 26px;font-size:1rem;box-shadow:0 10px 22px rgba(2,132,199,.38)}
+.btn-main:hover{box-shadow:0 14px 28px rgba(2,132,199,.48)}
+.btn-petit{background:linear-gradient(135deg,var(--ciel),var(--ciel-fonce));color:#fff;padding:9px 16px;font-size:.85rem}
+.btn-clair{background:#fff;color:var(--ciel-fonce);padding:14px 22px;font-size:.95rem;border:2px solid var(--ciel-pale)}
+
+/* ---------- En-tête de type « store » ---------- */
+.hero{margin-top:22px;background:#fff;border-radius:30px;padding:26px 22px;box-shadow:0 18px 40px rgba(2,100,160,.16)}
+.hero-haut{display:flex;gap:20px;align-items:center}
+.hero-logo{width:128px;height:128px;border-radius:32px;flex-shrink:0;box-shadow:0 14px 30px rgba(2,100,160,.38)}
+.hero h1{font-size:1.7rem;line-height:1.1;font-weight:900;letter-spacing:.3px}
+.dev{display:inline-block;margin-top:6px;font-weight:800;color:var(--ciel-fonce);font-size:1.02rem;text-decoration:none}
+.dev:hover{text-decoration:underline}
+.cat{margin-top:4px;font-size:.85rem;color:var(--doux)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{background:var(--ciel-pale);color:var(--ciel-fonce);font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:22px 0 18px;border-top:1px solid var(--ligne);border-bottom:1px solid var(--ligne)}
+.stat{text-align:center;padding:14px 6px;border-right:1px solid var(--ligne)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-size:1.05rem}
+.stat span{font-size:.72rem;color:var(--doux)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.actions .btn-main{flex:1 1 260px}
+.note-install{margin-top:12px;font-size:.78rem;color:var(--doux)}
+
+/* ---------- Sections ---------- */
+section{margin-top:34px}
+h2{font-size:1.25rem;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:5px;height:22px;border-radius:4px;background:linear-gradient(var(--ciel-clair),var(--ciel-fonce))}
+.carte{background:#fff;border-radius:24px;padding:22px;box-shadow:0 10px 28px rgba(2,100,160,.1)}
+.carte p{color:#274660;margin-bottom:12px}
+.carte p:last-child{margin-bottom:0}
+.fonctions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
+.fonction{display:flex;gap:12px;padding:14px;border-radius:18px;background:#F4FAFF;border:1px solid var(--ligne)}
+.fonction .ico{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--ciel-clair),var(--ciel-fonce));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem}
+.fonction b{display:block;font-size:.95rem}
+.fonction span{font-size:.82rem;color:var(--doux)}
+
+/* ---------- Aperçu (captures / maquettes) ---------- */
+.defile{display:flex;gap:16px;overflow-x:auto;padding:6px 4px 18px;scroll-snap-type:x mandatory}
+.defile>*{scroll-snap-align:center;flex-shrink:0}
+.defile img.capture{height:440px;width:auto;border-radius:22px;box-shadow:0 12px 28px rgba(2,100,160,.25)}
+.phone{width:215px;height:440px;border-radius:32px;background:var(--marine);padding:9px;box-shadow:0 14px 30px rgba(2,100,160,.3)}
+.ecran{width:100%;height:100%;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;padding:20px 12px 12px}
+.ecran.ciel{background:linear-gradient(180deg,#7DD3FC,#38BDF8)}
+.ecran.nuit{background:linear-gradient(180deg,var(--marine3),var(--marine))}
+.m-carte{background:#fff;border-radius:16px;width:100%;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.m-carte img{width:46px;height:46px;border-radius:13px}
+.m-champ{width:100%;height:26px;border-radius:9px;background:#F0F9FF;border:2px solid #dbeafe;font-size:.58rem;color:#8aa0b2;display:flex;align-items:center;padding:0 8px}
+.m-bouton{width:100%;height:24px;border-radius:9px;background:linear-gradient(135deg,var(--ciel),var(--ciel-fonce));color:#fff;font-size:.6rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.m-ligne{width:100%;display:flex;gap:7px;align-items:center;padding:5px;border-radius:9px;background:#F4FAFF}
+.m-ligne i{width:30px;height:23px;border-radius:5px;background:#cfe8f7;flex-shrink:0}
+.m-ligne div{flex:1;font-size:.52rem;line-height:1.3;color:var(--texte)}
+.m-ligne div b{display:block;font-size:.56rem}
+.m-ligne em{font-style:normal;font-size:.46rem;font-weight:800;color:var(--ciel-fonce);background:var(--ciel-pale);padding:3px 5px;border-radius:5px}
+.m-nav{position:absolute;left:12px;right:12px;bottom:10px;height:34px;border-radius:18px;background:var(--marine2);display:flex;align-items:center;justify-content:space-between;padding:0 5px;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.m-nav span{height:24px;border-radius:14px;flex:1;margin:0 2px}
+.m-nav .on{background:var(--ciel-clair)}
+.m-nav .off{background:rgba(255,255,255,.12)}
+.m-nav .rond{flex:0 0 24px;width:24px;background:linear-gradient(135deg,var(--ciel-clair),var(--ciel-fonce))}
+.cd{width:62%;aspect-ratio:1;border-radius:50%;margin-top:8px;position:relative;
+  background:conic-gradient(#e6f6ff,#7dd3fc,#fff,#38bdf8,#d9f0ff,#93c5fd,#e6f6ff);
+  box-shadow:0 0 28px rgba(56,189,248,.55);animation:tourne 7s linear infinite}
+.cd::before{content:"";position:absolute;inset:22%;border-radius:50%;background:linear-gradient(135deg,#38BDF8,#0369A1);border:2px solid rgba(255,255,255,.5)}
+.cd::after{content:"";position:absolute;inset:44%;border-radius:50%;background:var(--marine);border:2px solid rgba(255,255,255,.8)}
+@keyframes tourne{to{transform:rotate(360deg)}}
+.m-titre{color:#fff;font-weight:800;font-size:.74rem;margin-top:12px;text-align:center}
+.m-sous{color:#b9d4ea;font-size:.58rem;margin-top:2px}
+.m-barre{width:100%;height:4px;border-radius:3px;background:rgba(255,255,255,.2);margin-top:12px;overflow:hidden}
+.m-barre b{display:block;width:42%;height:100%;background:var(--ciel-clair)}
+.m-ctrl{display:flex;gap:10px;align-items:center;margin-top:14px}
+.m-ctrl span{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.14)}
+.m-ctrl .play{width:34px;height:34px;background:var(--ciel-clair)}
+.m-notif{background:rgba(255,255,255,.95);border-radius:14px;width:100%;padding:10px;margin-top:10px;font-size:.56rem;color:var(--texte)}
+.m-notif b{display:block;font-size:.62rem}
+.m-notif .ligne{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.m-notif img{width:16px;height:16px;border-radius:5px}
+
+/* ---------- Infos, installation, historique ---------- */
+.infos{display:grid;grid-template-columns:repeat(2,1fr);gap:0 28px}
+.info{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--ligne);font-size:.9rem}
+.info span{color:var(--doux)}
+.info b{text-align:right}
+.hash{font-family:ui-monospace,Consolas,monospace;font-size:.7rem;word-break:break-all;color:#274660;background:#F4FAFF;border:1px solid var(--ligne);border-radius:12px;padding:10px;margin-top:12px}
+.hash button{margin-top:8px;border:0;background:var(--ciel-pale);color:var(--ciel-fonce);font-weight:800;border-radius:9px;padding:6px 12px;cursor:pointer}
+.etapes{counter-reset:e;display:grid;gap:12px}
+.etape{display:flex;gap:14px;align-items:flex-start}
+.etape::before{counter-increment:e;content:counter(e);width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ciel-clair),var(--ciel-fonce));color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.etape b{display:block}
+.etape span{font-size:.88rem;color:var(--doux)}
+.histo{position:relative;padding-left:22px}
+.histo::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:3px;border-radius:3px;background:linear-gradient(var(--ciel-clair),#cfe8f7)}
+.ver{position:relative;background:#fff;border-radius:20px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 22px rgba(2,100,160,.09)}
+.ver::before{content:"";position:absolute;left:-22px;top:22px;width:15px;height:15px;border-radius:50%;background:#fff;border:4px solid var(--ciel-clair)}
+.ver-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.ver-num{font-weight:900;font-size:1.05rem}
+.ver time{margin-left:auto;font-size:.78rem;color:var(--doux)}
+.badge{font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:999px}
+.b-now{background:#DCFCE7;color:#166534}
+.b-old{background:var(--ciel-pale);color:var(--ciel-fonce)}
+.b-test{background:#FEF3C7;color:#92400E}
+.ver ul{padding-left:18px;font-size:.88rem;color:#274660}
+.ver li{margin-bottom:3px}
+
+/* ---------- Signature MalakiLabs ---------- */
+.signature{margin-top:40px;border-radius:30px;padding:34px 22px;text-align:center;color:#fff;
+  background:radial-gradient(circle at 20% 0,rgba(56,189,248,.35),transparent 55%),radial-gradient(circle at 90% 100%,rgba(14,165,233,.3),transparent 50%),var(--marine);
+  box-shadow:0 18px 40px rgba(11,27,46,.4)}
+.signature small{display:block;letter-spacing:3px;font-size:.72rem;color:#9fd6f5;text-transform:uppercase;margin-bottom:10px}
+.signature .marque{font-size:2.6rem;font-weight:900;letter-spacing:1px;line-height:1.05;background:linear-gradient(90deg,#fff,#7DD3FC 60%,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.signature p{margin-top:12px;color:#cfe5f5;font-size:.95rem}
+.signature .trait{width:64px;height:4px;border-radius:4px;background:var(--ciel-clair);margin:16px auto 0}
+
+footer{margin-top:26px;padding:0 0 110px;text-align:center;font-size:.76rem;color:var(--doux)}
+footer b{color:var(--texte)}
+footer p{margin-top:6px}
+
+/* ---------- Barre d'installation fixe (mobile) ---------- */
+.barre-fixe{display:none}
+@media (max-width:720px){
+  .hero-haut{flex-direction:column;text-align:center}
+  .hero-logo{width:112px;height:112px}
+  .chips{justify-content:center}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--ligne)}
+  .fonctions,.infos{grid-template-columns:1fr}
+  .signature .marque{font-size:2.1rem}
+  .topbar .btn-petit{display:none}
+  .barre-fixe{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:12px;align-items:center;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(2,100,160,.15)}
+  .barre-fixe img{width:40px;height:40px;border-radius:12px}
+  .barre-fixe div{flex:1;font-size:.82rem;line-height:1.2}
+  .barre-fixe div small{display:block;color:var(--doux);font-size:.7rem}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <img src="/static/logo.png" alt="Logo MUNKOYO MUSIQUE">
+    <div class="nom">MUNKOYO MUSIQUE<small>par <b>MalakiLabs</b></small></div>
+    <div class="espace"></div>
+    <a class="btn btn-petit" href="/api/download" data-dl>Installer</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- En-tête de l'application -->
+  <div class="hero">
+    <div class="hero-haut">
+      <img class="hero-logo" src="/static/logo.png" alt="Logo de l'application MUNKOYO MUSIQUE">
+      <div>
+        <h1>MUNKOYO MUSIQUE</h1>
+        <a class="dev" href="#signature">MalakiLabs</a>
+        <div class="cat">Musique et audio</div>
+        <div class="chips">
+          <span class="chip">Gratuit</span>
+          <span class="chip">Lecteur CD intégré</span>
+          <span class="chip">Compte facultatif</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>__VERSION__</b><span>Version</span></div>
+      <div class="stat"><b>__TAILLE__</b><span>Taille</span></div>
+      <div class="stat"><b>Android __ANDROID_MIN__+</b><span>Compatibilité</span></div>
+      <div class="stat"><b data-compteur>__TELECHARGEMENTS__</b><span>Téléchargements</span></div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-main" href="/api/download" data-dl>&#11015;&nbsp; Télécharger l'APK (__TAILLE__)</a>
+      <a class="btn btn-clair" href="#historique">Historique des versions</a>
+    </div>
+    <p class="note-install">Pour Android, téléphones 64 bits. Au moment d'installer, Android te demandera d'autoriser l'installation depuis ton navigateur : voir « Comment installer » plus bas.</p>
+  </div>
+
+  <!-- Aperçu -->
+  <section>
+    <h2>Aperçu</h2>
+    <div class="defile">
+      __APERCU__
+    </div>
+  </section>
+
+  <!-- À propos -->
+  <section>
+    <h2>À propos de cette application</h2>
+    <div class="carte">
+      <p><b>MUNKOYO MUSIQUE</b> te permet de retrouver un titre en tapant simplement son nom, de l'enregistrer sur ton téléphone et de l'écouter avec un lecteur en forme de CD, même sans connexion.</p>
+      <p>Dès l'ouverture, l'application te propose de la musique selon tes dernières recherches. Tu peux te connecter avec ton compte Google si tu veux retrouver ton historique partout, mais ce n'est jamais obligatoire.</p>
+      <div class="fonctions">
+        <div class="fonction"><div class="ico">&#128269;</div><div><b>Recherche intelligente</b><span>Des propositions apparaissent pendant que tu écris.</span></div></div>
+        <div class="fonction"><div class="ico">&#11015;</div><div><b>Téléchargement direct</b><span>Les titres sont enregistrés dans le dossier Musique/Munkoyo.</span></div></div>
+        <div class="fonction"><div class="ico">&#128191;</div><div><b>Lecteur CD</b><span>Aléatoire, répétition, vitesse de lecture et minuteur de sommeil.</span></div></div>
+        <div class="fonction"><div class="ico">&#128276;</div><div><b>Dans tes notifications</b><span>Commande la lecture et suis la progression des téléchargements.</span></div></div>
+        <div class="fonction"><div class="ico">&#128100;</div><div><b>Compte Google facultatif</b><span>Ton historique te suit, et tu peux l'effacer quand tu veux.</span></div></div>
+        <div class="fonction"><div class="ico">&#128260;</div><div><b>Mises à jour guidées</b><span>L'application te prévient quand une nouvelle version est disponible.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nouveautés -->
+  <section>
+    <h2>Nouveautés de la version __VERSION__</h2>
+    <div class="carte">
+      <ul style="padding-left:18px;color:#274660;font-size:.92rem">__NOUVEAUTES__</ul>
+    </div>
+  </section>
+
+  <!-- Informations -->
+  <section>
+    <h2>Informations</h2>
+    <div class="carte">
+      <div class="infos">
+        <div class="info"><span>Version</span><b>__VERSION__ (build __CODE__)</b></div>
+        <div class="info"><span>Mise à jour le</span><b>__DATE__</b></div>
+        <div class="info"><span>Taille</span><b>__TAILLE__</b></div>
+        <div class="info"><span>Android requis</span><b>__ANDROID_MIN__ ou plus récent</b></div>
+        <div class="info"><span>Processeur</span><b>64 bits (arm64-v8a)</b></div>
+        <div class="info"><span>Développeur</span><b>MalakiLabs</b></div>
+        <div class="info"><span>Catégorie</span><b>Musique et audio</b></div>
+        <div class="info"><span>Prix</span><b>Gratuit</b></div>
+        <div class="info"><span>Langue</span><b>Français</b></div>
+        <div class="info"><span>Téléchargements</span><b data-compteur>__TELECHARGEMENTS__</b></div>
+      </div>
+      <div class="hash">
+        <b>Empreinte SHA-256 du fichier</b> (pour vérifier que l'APK n'a pas été modifié) :<br>
+        <span id="sha">__SHA256__</span><br>
+        <button type="button" id="copier">Copier l'empreinte</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation -->
+  <section>
+    <h2>Comment installer</h2>
+    <div class="carte">
+      <div class="etapes">
+        <div class="etape"><div><b>Télécharge le fichier APK</b><span>Appuie sur « Télécharger l'APK » et attends la fin du téléchargement.</span></div></div>
+        <div class="etape"><div><b>Autorise l'installation</b><span>Si Android affiche « Installer des applications inconnues », active l'autorisation pour ton navigateur, puis reviens en arrière.</span></div></div>
+        <div class="etape"><div><b>Ouvre le fichier et installe</b><span>Si Play Protect affiche un avertissement (l'application ne vient pas du Play Store), choisis « Installer quand même ».</span></div></div>
+        <div class="etape"><div><b>Accepte les autorisations</b><span>Notifications et accès à la musique, pour la lecture et l'enregistrement de tes titres.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historique -->
+  <section id="historique">
+    <h2>Historique des versions</h2>
+    <div class="histo">
+      __HISTORIQUE__
+    </div>
+  </section>
+
+  <!-- Signature -->
+  <div class="signature" id="signature">
+    <small>Une création de</small>
+    <div class="marque">MalakiLabs</div>
+    <div class="trait"></div>
+    <p>MUNKOYO MUSIQUE est conçue et développée par <b>MalakiLabs</b>.</p>
+  </div>
+
+</main>
+
+<footer class="wrap">
+  <b>&copy; __ANNEE__ MalakiLabs</b> &mdash; Tous droits réservés.
+  <p>MUNKOYO MUSIQUE est destinée à un usage personnel. Respecte les droits des artistes et des producteurs.</p>
+</footer>
+
+<!-- Barre d'installation (téléphone) -->
+<div class="barre-fixe">
+  <img src="/static/logo.png" alt="">
+  <div><b>MUNKOYO MUSIQUE</b><small>par MalakiLabs &middot; __TAILLE__</small></div>
+  <a class="btn btn-petit" href="/api/download" data-dl style="display:inline-flex">Installer</a>
+</div>
+
+<script>
+async function majCompteur(){
+  try{
+    const r = await fetch('/api/stats');
+    const d = await r.json();
+    document.querySelectorAll('[data-compteur]').forEach(e => e.textContent = d.downloads);
+  }catch(e){}
+}
+majCompteur();
+document.querySelectorAll('[data-dl]').forEach(a => a.addEventListener('click', () => setTimeout(majCompteur, 2000)));
+document.getElementById('copier').addEventListener('click', async (ev) => {
+  const t = document.getElementById('sha').textContent.trim();
+  try{ await navigator.clipboard.writeText(t); ev.target.textContent = 'Copié !'; }
+  catch(e){ ev.target.textContent = 'Copie impossible'; }
+  setTimeout(() => ev.target.textContent = "Copier l'empreinte", 2000);
+});
+</script>
+</body>
+</html>
