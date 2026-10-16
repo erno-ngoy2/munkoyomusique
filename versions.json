@@ -1,9 +1,24 @@
 [
   {
+  "version": "2.0.0",
+  "code": 3,
+  "date": "2026-10-16",
+  "statut": "actuelle",
+  "notes": [
+    "Accueil en carrés : suggestions sans fin, avec défilement horizontal par thème",
+    "Résultats de recherche en grille de carrés, chargés au fur et à mesure du défilement",
+    "La pochette de la chanson se télécharge avec l'audio et s'affiche sur le CD, le mini-lecteur et la notification de lecture",
+    "Messages d'erreur clairs avec bouton « Réessayer », et meilleure gestion du mode hors ligne",
+    "Écris-nous depuis ton profil : MalakiLabs te répond directement dans l'application",
+    "La notification de mise à jour ouvre directement le site de téléchargement"
+  ]
+},
+
+  {
     "version": "1.1",
     "code": 2,
     "date": "2026-10-12",
-    "statut": "actuelle",
+    "statut": "precedente",
     "notes": [
       "Compte Google facultatif : ta photo de profil s'affiche dans le bouton rond de la barre de navigation",
       "Historique de recherche relié à ton compte, avec suppression d'un élément ou de tout l'historique",
