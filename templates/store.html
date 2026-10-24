@@ -184,7 +184,7 @@ footer p{margin-top:6px}
     <img src="/static/logo.png" alt="Logo MUNKOYO MUSIQUE">
     <div class="nom">MUNKOYO MUSIQUE<small>par <b>MalakiLabs</b></small></div>
     <div class="espace"></div>
-    <a class="btn btn-petit" href="/api/download" data-dl>Installer</a>
+    <a class="btn btn-petit" href="https://mmusique.onrender.com">Installer</a>
   </div>
 </header>
 
@@ -214,7 +214,7 @@ footer p{margin-top:6px}
     </div>
 
     <div class="actions">
-      <a class="btn btn-main" href="/api/download" data-dl>&#11015;&nbsp; Télécharger l'APK (__TAILLE__)</a>
+      <a class="btn btn-main" href="https://mmusique.onrender.com">&#11015;&nbsp; Télécharger l'APK (__TAILLE__)</a>
       <a class="btn btn-clair" href="#historique">Historique des versions</a>
     </div>
     <p class="note-install">Pour Android, téléphones 64 bits. Au moment d'installer, Android te demandera d'autoriser l'installation depuis ton navigateur : voir « Comment installer » plus bas.</p>
@@ -317,7 +317,7 @@ footer p{margin-top:6px}
 <div class="barre-fixe">
   <img src="/static/logo.png" alt="">
   <div><b>MUNKOYO MUSIQUE</b><small>par MalakiLabs &middot; __TAILLE__</small></div>
-  <a class="btn btn-petit" href="/api/download" data-dl style="display:inline-flex">Installer</a>
+  <a class="btn btn-petit" href="https://mmusique.onrender.com" style="display:inline-flex">Installer</a>
 </div>
 
 <script>
@@ -329,7 +329,6 @@ async function majCompteur(){
   }catch(e){}
 }
 majCompteur();
-document.querySelectorAll('[data-dl]').forEach(a => a.addEventListener('click', () => setTimeout(majCompteur, 2000)));
 document.getElementById('copier').addEventListener('click', async (ev) => {
   const t = document.getElementById('sha').textContent.trim();
   try{ await navigator.clipboard.writeText(t); ev.target.textContent = 'Copié !'; }
