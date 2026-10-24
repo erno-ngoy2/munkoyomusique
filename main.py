@@ -19,6 +19,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.responses import RedirectResponse
 
 BASE = Path(__file__).resolve().parent
 COUNTER_FILE = BASE / "downloads_count.json"
@@ -217,13 +218,7 @@ def download_apk():
     if not APK_PATH.exists():
         return JSONResponse(status_code=404, content={"error": "APK introuvable sur le serveur."})
     increment_count()
-    version = str(version_actuelle(lire_versions()).get("version", ""))
-    nom = f"munkoyo_musique_v{version}.apk" if version and version != "?" else "munkoyo_musique.apk"
-    return FileResponse(
-        path=str(APK_PATH),
-        media_type="application/vnd.android.package-archive",
-        filename=nom,
-    )
+    return RedirectResponse(url="https://mmusique.onrender.com", status_code=303)
 
 
 @app.get("/api/stats")
