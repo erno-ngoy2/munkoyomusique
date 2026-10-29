@@ -1,0 +1,86 @@
+<style>
+  #pop-intro{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(4,14,26,.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);font-family:inherit}
+  #pop-intro.ouvert{display:flex;animation:popFondu .25s ease}
+  #pop-intro .pop-carte{position:relative;width:100%;max-width:440px;max-height:calc(100vh - 36px);overflow:auto;background:#102a44;border:1px solid rgba(56,189,248,.22);border-radius:22px;padding:22px 20px 18px;color:#e6f2fb;box-shadow:0 24px 60px rgba(0,0,0,.45);animation:popMonte .3s ease}
+  #pop-intro .pop-fermer{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.08);color:#e6f2fb;display:grid;place-items:center;cursor:pointer}
+  #pop-intro .pop-fermer svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+  #pop-intro .pop-entete{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  #pop-intro .pop-marque{width:44px;height:44px;border-radius:14px;background:rgba(56,189,248,.14);display:grid;place-items:center;flex:none}
+  #pop-intro .pop-marque svg{width:28px;height:28px;fill:none;stroke:#38bdf8;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+  #pop-intro h2{margin:0;font-size:1.25rem;font-weight:800;line-height:1.2}
+  #pop-intro .pop-sous{margin:2px 0 0;color:#9bb7cc;font-size:.8rem}
+  #pop-intro .pop-texte{color:#9bb7cc;font-size:.92rem;line-height:1.6;margin:0 0 16px}
+  #pop-intro .pop-bloc{background:rgba(255,255,255,.035);border:1px solid rgba(56,189,248,.12);border-radius:16px;padding:14px;margin-bottom:12px}
+  #pop-intro .pop-bloc h3{margin:0 0 10px;font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;color:#38bdf8;font-weight:700}
+  #pop-intro .pop-manuel{display:flex;gap:12px;align-items:flex-start}
+  #pop-intro .pop-manuel svg.pi{width:24px;height:24px;flex:none;fill:none;stroke:#38bdf8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  #pop-intro .pop-manuel b{display:block;font-size:.95rem;margin-bottom:2px}
+  #pop-intro .pop-manuel p{margin:0;color:#9bb7cc;font-size:.82rem;line-height:1.5}
+  #pop-intro .pop-infos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  #pop-intro .pop-info{text-align:center;background:rgba(255,255,255,.035);border-radius:12px;padding:9px 4px}
+  #pop-intro .pop-info b{display:block;font-size:.92rem}
+  #pop-intro .pop-info span{font-size:.7rem;color:#9bb7cc}
+  #pop-intro .pop-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:50px;border-radius:15px;font:700 .95rem inherit;text-decoration:none;cursor:pointer;border:none;margin-top:10px;font-family:inherit}
+  #pop-intro .pop-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  #pop-intro .pop-principal{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#0b1f33}
+  #pop-intro .pop-secondaire{background:transparent;color:#e6f2fb;border:1.5px solid rgba(56,189,248,.4)}
+  @keyframes popFondu{from{opacity:0}to{opacity:1}}
+  @keyframes popMonte{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+</style>
+<div id="pop-intro" role="dialog" aria-modal="true" aria-labelledby="pop-titre">
+  <div class="pop-carte">
+    <button class="pop-fermer" type="button" aria-label="Fermer" data-sauter>
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="pop-entete">
+      <div class="pop-marque" aria-hidden="true">
+        <svg viewBox="0 0 512 512"><path d="M120,330 L120,195 L185,285 L250,195 L250,330"/><path d="M250,195 L315,285 L380,195 L380,330"/><path d="M197,385 L197,405 M228,372 L228,418 M258,356 L258,434 M288,372 L288,418 M319,385 L319,405" stroke-width="16"/></svg>
+      </div>
+      <div>
+        <h2 id="pop-titre">Bienvenue</h2>
+        <p class="pop-sous">MUNKOYO MUSIQUE par MalakiLabs</p>
+      </div>
+    </div>
+    <p class="pop-texte">Recherchez vos musiques, créez vos playlists, partagez avec vos amis dans des staffs et chantez en karaoké. Le manuel vous explique chaque fonction pas à pas.</p>
+
+    <div class="pop-bloc">
+      <h3>Manuel d'utilisation</h3>
+      <div class="pop-manuel">
+        <svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 8h6"/></svg>
+        <div>
+          <b>Guide pas à pas</b>
+          <p>Recherche, téléchargement, playlists, staffs et karaoké expliqués avec des captures et des conseils.</p>
+        </div>
+      </div>
+      <a class="pop-btn pop-principal" href="/static/manuel.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/></svg>
+        <span>Ouvrir le manuel</span>
+      </a>
+    </div>
+
+    <div class="pop-bloc">
+      <h3>Application Android</h3>
+      <div class="pop-infos">
+        <div class="pop-info"><b>{{VERSION}}</b><span>Version</span></div>
+        <div class="pop-info"><b>{{TAILLE}}</b><span>Taille</span></div>
+        <div class="pop-info"><b>{{DATE}}</b><span>Mise à jour</span></div>
+      </div>
+    </div>
+
+    <button class="pop-btn pop-secondaire" type="button" data-sauter>
+      <span>Sauter</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+(function(){
+  var cle='munkoyo_intro_vue', pop=document.getElementById('pop-intro');
+  function fermer(){ pop.classList.remove('ouvert'); try{localStorage.setItem(cle,'1');}catch(e){} }
+  pop.querySelectorAll('[data-sauter]').forEach(function(b){ b.addEventListener('click', fermer); });
+  pop.addEventListener('click', function(e){ if(e.target===pop) fermer(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') fermer(); });
+  var deja=false; try{ deja=localStorage.getItem(cle)==='1'; }catch(e){}
+  if(!deja){ pop.classList.add('ouvert'); }
+})();
+</script>

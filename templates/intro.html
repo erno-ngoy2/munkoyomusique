@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MUNKOYO MUSIQUE</title>
+  <link rel="icon" href="/static/favicon.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <style>
+    :root { --ciel:#38bdf8; --ciel2:#0ea5e9; --marine:#0b1f33; --marine2:#14365a; --carte:#102a44; --texte:#e6f2fb; --doux:#9bb7cc; }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      font-family: Poppins, system-ui, sans-serif; color: var(--texte);
+      background: radial-gradient(circle at 50% -10%, var(--marine2), var(--marine) 65%);
+      padding: max(20px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+    }
+    .page { max-width: 480px; margin: 0 auto; }
+    .entete { display: flex; align-items: center; gap: 12px; margin: 8px 0 22px; }
+    .marque { width: 46px; height: 46px; border-radius: 14px; background: rgba(56,189,248,.14); display: grid; place-items: center; flex: none; }
+    .marque svg { width: 30px; height: 30px; fill: none; stroke: var(--ciel); stroke-width: 30; stroke-linecap: round; stroke-linejoin: round; }
+    .titre-app { font-weight: 800; letter-spacing: .6px; font-size: 1rem; }
+    .sous-titre { color: var(--doux); font-size: .8rem; }
+    h1 { font-size: 1.45rem; font-weight: 800; margin: 0 0 8px; line-height: 1.25; }
+    .intro { color: var(--doux); font-size: .93rem; line-height: 1.6; margin: 0 0 22px; }
+    .carte { background: var(--carte); border: 1px solid rgba(56,189,248,.14); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
+    .carte h2 { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ciel); margin: 0 0 14px; }
+    .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fonction { background: rgba(255,255,255,.035); border-radius: 14px; padding: 12px; }
+    .fonction svg { width: 22px; height: 22px; fill: none; stroke: var(--ciel); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; display: block; }
+    .fonction b { display: block; font-size: .88rem; margin-bottom: 3px; }
+    .fonction span { color: var(--doux); font-size: .76rem; line-height: 1.4; }
+    .manuel { display: flex; align-items: center; gap: 14px; }
+    .manuel-icone { width: 48px; height: 48px; border-radius: 14px; background: rgba(56,189,248,.14); display: grid; place-items: center; flex: none; }
+    .manuel-icone svg { width: 24px; height: 24px; fill: none; stroke: var(--ciel); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .manuel p { margin: 0; color: var(--doux); font-size: .84rem; line-height: 1.5; }
+    .manuel b { display: block; font-size: .98rem; margin-bottom: 2px; }
+    .infos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+    .info { text-align: center; background: rgba(255,255,255,.035); border-radius: 12px; padding: 10px 6px; }
+    .info b { display: block; font-size: .95rem; }
+    .info span { font-size: .72rem; color: var(--doux); }
+    .bouton { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 54px; border-radius: 16px; font: 700 .98rem Poppins, sans-serif; text-decoration: none; cursor: pointer; border: none; transition: transform .15s ease; }
+    .bouton:active { transform: scale(.98); }
+    .bouton svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .principal { background: linear-gradient(135deg, var(--ciel), var(--ciel2)); color: var(--marine); }
+    .secondaire { background: transparent; color: var(--texte); border: 1.5px solid rgba(56,189,248,.4); margin-top: 10px; }
+    .pied { text-align: center; color: var(--doux); font-size: .74rem; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="entete">
+      <div class="marque" aria-hidden="true">
+        <svg viewBox="0 0 512 512"><path d="M120,330 L120,195 L185,285 L250,195 L250,330"/><path d="M250,195 L315,285 L380,195 L380,330"/><path d="M197,385 L197,405 M228,372 L228,418 M258,356 L258,434 M288,372 L288,418 M319,385 L319,405" stroke-width="16"/></svg>
+      </div>
+      <div>
+        <div class="titre-app">MUNKOYO MUSIQUE</div>
+        <div class="sous-titre">Application musicale par MalakiLabs</div>
+      </div>
+    </header>
+
+    <h1>Bienvenue</h1>
+    <p class="intro">Recherchez vos musiques, créez vos playlists, partagez avec vos amis dans des staffs et chantez en karaoké. Découvrez comment tout utiliser dans le manuel.</p>
+
+    <section class="carte">
+      <h2>Fonctions principales</h2>
+      <div class="grille">
+        <div class="fonction">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <b>Recherche</b><span>Trouvez un titre par son nom</span>
+        </div>
+        <div class="fonction">
+          <svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>
+          <b>Téléchargement</b><span>Écoutez hors connexion</span>
+        </div>
+        <div class="fonction">
+          <svg viewBox="0 0 24 24"><path d="M4 6h12M4 12h12M4 18h8"/><path d="M19 15v6M16 18h6"/></svg>
+          <b>Playlists</b><span>Privées ou publiques</span>
+        </div>
+        <div class="fonction">
+          <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          <b>Karaoké</b><span>Chantez sur vos titres</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="carte">
+      <h2>Manuel d'utilisation</h2>
+      <div class="manuel">
+        <div class="manuel-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 8h6"/></svg>
+        </div>
+        <div>
+          <b>Guide pas à pas</b>
+          <p>Toutes les fonctions expliquées avec des écrans, des conseils et les questions fréquentes.</p>
+        </div>
+      </div>
+      <a class="bouton principal" style="margin-top:16px" href="/static/manuel.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/></svg>
+        <span>Ouvrir le manuel</span>
+      </a>
+    </section>
+
+    <section class="carte">
+      <h2>Application Android</h2>
+      <div class="infos">
+        <div class="info"><b>{{VERSION}}</b><span>Version</span></div>
+        <div class="info"><b>{{TAILLE}}</b><span>Taille</span></div>
+        <div class="info"><b>{{DATE}}</b><span>Mise à jour</span></div>
+      </div>
+    </section>
+
+    <a class="bouton secondaire" href="{{PAGE_SUIVANTE}}">
+      <span>Sauter</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+    </a>
+    <p class="pied">MalakiLabs</p>
+  </main>
+</body>
+</html>

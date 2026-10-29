@@ -202,14 +202,29 @@ def rendre_page():
     page = TEMPLATE.read_text(encoding="utf-8")
     for cle, valeur in remplacements.items():
         page = page.replace(cle, valeur)
+    # Fenêtre d'introduction (manuel + « Sauter ») affichée en popup sur le site central
+    popup = POPUP.read_text(encoding="utf-8")
+    popup = popup.replace("{{VERSION}}", ("v" + str(actuelle.get("version"))) if actuelle.get("version") else "-")
+    popup = popup.replace("{{TAILLE}}", taille if infos else "-")
+    popup = popup.replace("{{DATE}}", (infos["date"].strftime("%d/%m/%Y") if infos else "-"))
+    page = page.replace("</body>", popup + "\n</body>", 1)
     return page
 
 
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
+POPUP = BASE / "templates" / "popup.html"
+
+
 @app.get("/", response_class=HTMLResponse)
 def index():
+    """Site central : la fenêtre d'introduction s'affiche en popup au premier accès."""
+    return HTMLResponse(content=rendre_page())
+
+
+@app.get("/store", response_class=HTMLResponse)
+def store():
     return HTMLResponse(content=rendre_page())
 
 

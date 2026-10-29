@@ -75,7 +75,8 @@ h2::before{content:"";width:5px;height:22px;border-radius:4px;background:linear-
 .carte p:last-child{margin-bottom:0}
 .fonctions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
 .fonction{display:flex;gap:12px;padding:14px;border-radius:18px;background:#F4FAFF;border:1px solid var(--ligne)}
-.fonction .ico{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--ciel-clair),var(--ciel-fonce));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem}
+.fonction .ico{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--ciel-clair),var(--ciel-fonce));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fonction .ico svg{width:21px;height:21px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fonction b{display:block;font-size:.95rem}
 .fonction span{font-size:.82rem;color:var(--doux)}
 
@@ -214,7 +215,7 @@ footer p{margin-top:6px}
     </div>
 
     <div class="actions">
-      <a class="btn btn-main" href="https://mmusique.onrender.com">&#11015;&nbsp; Télécharger l'APK (__TAILLE__)</a>
+      <a class="btn btn-main" href="https://mmusique.onrender.com">&nbsp; Télécharger l'APK (__TAILLE__)</a>
       <a class="btn btn-clair" href="#historique">Historique des versions</a>
     </div>
     <p class="note-install">Pour Android, téléphones 64 bits. Au moment d'installer, Android te demandera d'autoriser l'installation depuis ton navigateur : voir « Comment installer » plus bas.</p>
@@ -235,12 +236,12 @@ footer p{margin-top:6px}
       <p><b>MUNKOYO MUSIQUE</b> te permet de retrouver un titre en tapant simplement son nom, de l'enregistrer sur ton téléphone et de l'écouter avec un lecteur en forme de CD, même sans connexion.</p>
       <p>Dès l'ouverture, l'application te propose de la musique selon tes dernières recherches. Tu peux te connecter avec ton compte Google si tu veux retrouver ton historique partout, mais ce n'est jamais obligatoire.</p>
       <div class="fonctions">
-        <div class="fonction"><div class="ico">&#128269;</div><div><b>Recherche intelligente</b><span>Des propositions apparaissent pendant que tu écris.</span></div></div>
-        <div class="fonction"><div class="ico">&#11015;</div><div><b>Téléchargement direct</b><span>Les titres sont enregistrés dans le dossier Musique/Munkoyo.</span></div></div>
-        <div class="fonction"><div class="ico">&#128191;</div><div><b>Lecteur CD</b><span>Aléatoire, répétition, vitesse de lecture et minuteur de sommeil.</span></div></div>
-        <div class="fonction"><div class="ico">&#128276;</div><div><b>Dans tes notifications</b><span>Commande la lecture et suis la progression des téléchargements.</span></div></div>
-        <div class="fonction"><div class="ico">&#128100;</div><div><b>Compte Google facultatif</b><span>Ton historique te suit, et tu peux l'effacer quand tu veux.</span></div></div>
-        <div class="fonction"><div class="ico">&#128260;</div><div><b>Mises à jour guidées</b><span>L'application te prévient quand une nouvelle version est disponible.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div><div><b>Recherche intelligente</b><span>Des propositions apparaissent pendant que tu écris.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></div><div><b>Téléchargement direct</b><span>Les titres sont enregistrés dans le dossier Musique/Munkoyo.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg></div><div><b>Lecteur CD</b><span>Aléatoire, répétition, vitesse de lecture et minuteur de sommeil.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z"/><path d="M10 21h4"/></svg></div><div><b>Dans tes notifications</b><span>Commande la lecture et suis la progression des téléchargements.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><div><b>Compte Google facultatif</b><span>Ton historique te suit, et tu peux l'effacer quand tu veux.</span></div></div>
+        <div class="fonction"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><div><b>Mises à jour guidées</b><span>L'application te prévient quand une nouvelle version est disponible.</span></div></div>
       </div>
     </div>
   </section>
